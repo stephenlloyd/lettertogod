@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reading together — Letter To God</title>
+<meta name="description" content="What this congregation is reading, and how to read along.">
+<link rel="icon" href="../assets/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  .hero{text-align:center;padding:72px 0 40px;
+        background:radial-gradient(1200px 500px at 50% -10%, #2b2618 0%, var(--bg) 60%)}
+  .town{color:var(--gold);font-size:13px;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
+  .count{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,9vw,72px);
+         font-weight:600;color:var(--gold-soft);line-height:1}
+  .today{background:var(--surface);border:1px solid var(--gold);border-radius:18px;
+         padding:28px;text-align:center;margin:28px 0}
+  .today .ref{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,5vw,38px);
+              font-weight:600;color:var(--text);line-height:1.2}
+  .rows{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  .row{display:flex;align-items:baseline;gap:16px;padding:13px 20px;border-top:1px solid var(--line)}
+  .row:first-child{border-top:0}
+  .row .when{color:var(--muted);font-size:13px;min-width:86px;flex-shrink:0}
+  .row .what{font-size:15.5px}
+  .row.is-today{background:rgba(196,154,108,.10)}
+  .row.is-today .when{color:var(--gold)}
+  .badges{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+  .badge{display:inline-flex;align-items:center;gap:10px;background:var(--surface);
+         border:1px solid var(--line);border-radius:14px;padding:12px 20px;color:var(--text);font-size:15px}
+  .badge:hover{border-color:var(--gold)}
+  .badge small{display:block;color:var(--muted);font-size:11px;letter-spacing:.5px;text-transform:uppercase}
+  .badge b{font-size:16px;font-weight:600}
+  #loading,#failed{text-align:center;padding:100px 0;color:var(--muted)}
+  details{margin-top:10px}
+  summary{cursor:pointer;color:var(--gold-soft);font-size:15px;padding:8px 0}
+</style>
+</head>
+<body>
+<nav><div class="wrap">
+  <a class="brand" href="../"><img src="../assets/icon.png" alt="">Letter To God</a>
+  <div class="navlinks">
+    <a href="../certificates/">How it works</a>
+    <a href="../churches/">For churches</a>
+  </div>
+</div></nav>
+
+<div id="loading">Loading…</div>
+
+<div id="failed" hidden>
+  <h2 class="serif">That church is not listed</h2>
+  <p>The link may be out of date, or the church may not have joined yet.</p>
+  <p><a href="../churches/">How a church joins &rarr;</a></p>
+</div>
+
+<main id="page" hidden>
+  <header class="hero"><div class="wrap">
+    <div class="town" id="town"></div>
+    <h1 id="name"></h1>
+    <p class="muted" style="margin-top:14px">Reading the Bible together</p>
+  </div></header>
+
+  <section><div class="wrap"><div class="narrow">
+    <div id="planBox"></div>
+
+    <div class="badges">
+      <a class="badge" href="https://apps.apple.com/app/id6784824470">
+        <span>&#63743;</span><span><small>Download on the</small><b>App Store</b></span>
+      </a>
+      <a class="badge" href="https://play.google.com/store/apps/details?id=com.lettertogod.app">
+        <span>&#9654;</span><span><small>Get it on</small><b>Google Play</b></span>
+      </a>
+    </div>
+    <p class="muted" style="text-align:center;margin-top:16px;font-size:14px">
+      The app keeps track of which chapters you have read, so it knows what you
+      have left to catch up on. This page cannot &mdash; it holds nothing about anyone.
+    </p>
+  </div></div></section>
+
+  <section class="band"><div class="wrap"><div class="narrow" style="text-align:center">
+    <h2>Together so far</h2>
+    <div class="count" id="chapters">0</div>
+    <p id="countLine">chapters read</p>
+    <p class="muted" style="font-size:14px">
+      A count and nothing else. We do not know who read what, and we never will.
+    </p>
+  </div></div></section>
+
+  <section><div class="wrap"><div class="narrow" style="text-align:center">
+    <h2>For whoever runs this</h2>
+    <p>Posters and pew slips for this church, ready to print. Nothing to pay, nothing to install.</p>
+    <a class="btn primary" id="printLink" href="#">Posters and slips &rarr;</a>
+  </div></div></section>
+</main>
+
+<footer><div class="wrap">
+  <div class="brand serif" style="justify-content:center;margin-bottom:14px">Letter To God</div>
+  <a href="../privacy/">Privacy</a>
+  <a href="../terms/">Terms</a>
+  <a href="../support/">Support</a>
+  <a href="mailto:hello@letterstogodapp.org">Contact</a>
+</div></footer>
+
+<script type="module">
+import { churchIdFromUrl, fetchChurch, fetchPlans, planState,
+         describeChapters, fmtDate, fmtLong } from '../assets/plan.js';
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) =>
+  ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+function fail() {
+  $('loading').hidden = true;
+  $('failed').hidden = false;
+}
+
+function rowsHtml(entries, todayDay) {
+  return `<div class="rows">${entries.map((e) => `
+    <div class="row${e.day === todayDay ? ' is-today' : ''}">
+      <div class="when">${e.day === todayDay ? 'Today' : esc(fmtDate(e.date))}</div>
+      <div class="what">${esc(describeChapters(e.chapters))}</div>
+    </div>`).join('')}</div>`;
+}
+
+function renderPlan(church, plans) {
+  const box = $('planBox');
+  if (!church.plan) {
+    box.innerHTML = `
+      <div class="card" style="text-align:center">
+        <h3 style="margin-top:0">No plan set just yet</h3>
+        <p style="margin-bottom:0">Read whatever you like in the app. Whatever you
+        read still counts towards this church.</p>
+      </div>`;
+    return;
+  }
+  const plan = plans.find((p) => p.id === church.plan.id);
+  if (!plan) { box.innerHTML = ''; return; }
+
+  const s = planState(plan, church.plan.start);
+  const head = `<h2 style="text-align:center">${esc(plan.title)}</h2>`;
+
+  if (s.notStarted) {
+    box.innerHTML = `${head}
+      <div class="today">
+        <p style="margin:0">Begins ${esc(fmtLong(s.startsOn))}</p>
+        <div class="ref">${esc(describeChapters(plan.days[0].chapters))}</div>
+        <p class="muted" style="margin:10px 0 0">on the first day</p>
+      </div>`;
+    return;
+  }
+  if (s.finished) {
+    box.innerHTML = `${head}
+      <div class="today">
+        <div class="ref">Finished</div>
+        <p class="muted" style="margin:10px 0 0">
+          All ${plan.totalChapters} chapters, ending ${esc(fmtLong(s.endsOn))}.</p>
+      </div>`;
+    return;
+  }
+
+  box.innerHTML = `${head}
+    <div class="today">
+      <p style="margin:0">Today &mdash; day ${s.day} of ${s.total}</p>
+      <div class="ref">${esc(describeChapters(s.today.chapters))}</div>
+    </div>
+
+    <h3>The week ahead</h3>
+    ${rowsHtml(s.week, s.day)}
+
+    ${s.missed.length ? `
+      <details>
+        <summary>Catching up &mdash; the last ${s.missed.length} ${s.missed.length === 1 ? 'day' : 'days'}</summary>
+        ${rowsHtml([...s.missed].reverse(), -1)}
+        <p class="muted" style="font-size:14px;margin-top:12px">
+          Behind is fine. Start where everyone else is today, and pick these up
+          when you want them.
+        </p>
+      </details>` : ''}`;
+}
+
+(async () => {
+  const id = churchIdFromUrl();
+  if (!id) return fail();
+  try {
+    const [church, plans] = await Promise.all([fetchChurch(id), fetchPlans('..')]);
+    if (!church) return fail();
+
+    document.title = `${church.name} — reading together`;
+    $('name').textContent = church.name;
+    $('town').textContent = church.town;
+    $('chapters').textContent = church.chapters.toLocaleString('en-GB');
+    $('countLine').textContent = church.chapters === 1
+      ? 'chapter read'
+      : `chapters read by ${church.readers} ${church.readers === 1 ? 'person' : 'people'}`;
+    $('printLink').href = `../print/?church=${encodeURIComponent(id)}`;
+
+    renderPlan(church, plans);
+    $('loading').hidden = true;
+    $('page').hidden = false;
+  } catch {
+    fail();
+  }
+})();
+</script>
+</body>
+</html>

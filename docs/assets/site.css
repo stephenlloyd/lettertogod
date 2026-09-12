@@ -1,0 +1,42 @@
+/* Shared shell for the Letter To God site. One copy, so the church pages and
+   the marketing pages cannot drift apart visually. */
+:root{
+  --bg:#1C1B18; --bg2:#232019; --surface:#2A2825; --line:#3A3733;
+  --text:#EDEBE6; --muted:#A49E96; --gold:#C49A6C; --gold-soft:#D9B487;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;
+     line-height:1.65;-webkit-font-smoothing:antialiased}
+.serif{font-family:'Cormorant Garamond',Georgia,serif}
+a{color:var(--gold-soft);text-decoration:none}
+.wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+.narrow{max-width:660px;margin:0 auto}
+nav{position:sticky;top:0;z-index:10;background:rgba(28,27,24,.82);
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.brand{display:flex;align-items:center;gap:12px;font-family:'Cormorant Garamond',serif;
+       font-size:22px;font-weight:600;color:var(--text)}
+.brand img{width:32px;height:32px;border-radius:8px}
+.navlinks a{color:var(--muted);margin-left:24px;font-size:15px}
+.navlinks a:hover{color:var(--text)}
+section{padding:56px 0}
+h1{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,5.5vw,52px);
+   font-weight:600;line-height:1.08;letter-spacing:.4px}
+h2{font-family:'Cormorant Garamond',serif;font-size:clamp(24px,4vw,34px);
+   font-weight:600;margin-bottom:18px}
+h3{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:600;margin:26px 0 8px}
+p{color:var(--muted);font-size:16.5px;margin-bottom:14px}
+p strong{color:var(--text);font-weight:600}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:26px}
+.band{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.btn{display:inline-flex;align-items:center;gap:10px;background:var(--surface);
+     border:1px solid var(--line);border-radius:14px;padding:13px 20px;color:var(--text);
+     font-size:15px;transition:.2s;cursor:pointer;font-family:inherit}
+.btn:hover{border-color:var(--gold)}
+.btn.primary{background:var(--gold);border-color:var(--gold);color:#231f19;font-weight:600}
+.muted{color:var(--muted)}
+footer{padding:40px 0;text-align:center;color:var(--muted);font-size:14px;
+       border-top:1px solid var(--line)}
+footer a{margin:0 12px;color:var(--muted)}
+footer a:hover{color:var(--text)}
+@media(max-width:760px){.navlinks{display:none}section{padding:44px 0}}

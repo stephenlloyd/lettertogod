@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Posters and slips — Letter To God</title>
+<meta name="description" content="Printable posters and pew slips for your church.">
+<link rel="icon" href="../assets/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/site.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  /* ---- On screen: pick a sheet, then print it ---- */
+  .picker{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:26px 0}
+  .pick{background:var(--surface);border:1px solid var(--line);border-radius:14px;
+        padding:18px;cursor:pointer;text-align:left;color:var(--text);font-family:inherit}
+  .pick:hover{border-color:var(--gold)}
+  .pick[aria-pressed="true"]{border-color:var(--gold);background:rgba(196,154,108,.10)}
+  .pick b{display:block;font-size:15px;margin-bottom:4px}
+  .pick span{color:var(--muted);font-size:13px}
+  .preview{background:#fff;border-radius:8px;padding:0;margin-top:26px;
+           box-shadow:0 20px 60px rgba(0,0,0,.5);overflow:hidden}
+
+  /* ---- The sheets themselves. Always black on white, whatever the screen does. ---- */
+  .sheet{background:#fff;color:#141414;width:210mm;min-height:297mm;padding:18mm 16mm;
+         margin:0 auto;font-family:Inter,system-ui,sans-serif;transform-origin:top left}
+  .sheet .serif{font-family:'Cormorant Garamond',Georgia,serif}
+  .sheet h1,.sheet h2,.sheet h3{color:#141414}
+
+  .poster{display:flex;flex-direction:column;align-items:center;text-align:center;
+          min-height:261mm;justify-content:space-between}
+  .poster .top .kicker{font-size:12pt;letter-spacing:3px;text-transform:uppercase;color:#7a6a55}
+  .poster .top h1{font-family:'Cormorant Garamond',serif;font-size:44pt;line-height:1.05;
+                  font-weight:600;margin:8mm 0 4mm}
+  .poster .top .church{font-family:'Cormorant Garamond',serif;font-size:26pt;color:#8B5E3C}
+  .poster .qrwrap{margin:6mm 0}
+  .poster .qrwrap canvas,.poster .qrwrap img{display:block}
+  .poster .url{font-size:11pt;color:#6b6560;margin-top:3mm;word-break:break-all}
+  .poster .steps{display:flex;gap:8mm;margin-top:4mm;text-align:left}
+  .poster .steps div{flex:1;font-size:10.5pt;color:#3a3630;line-height:1.5}
+  .poster .steps b{display:block;color:#141414}
+  .poster .foot{font-size:9.5pt;color:#8a8177;border-top:1px solid #e0dad1;
+                padding-top:4mm;width:100%;margin-top:6mm}
+
+  .slips{display:grid;grid-template-columns:1fr 1fr;gap:0}
+  .slip{border:1px dashed #c9c2b7;padding:10mm 8mm;text-align:center;min-height:82mm;
+        display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .slip .t{font-family:'Cormorant Garamond',serif;font-size:16pt;font-weight:600;line-height:1.15}
+  .slip .c{font-size:10pt;color:#8B5E3C;margin-top:1mm}
+  .slip .q{margin:4mm 0 2mm}
+  .slip .u{font-size:7.5pt;color:#6b6560;word-break:break-all}
+
+  .list h1{font-family:'Cormorant Garamond',serif;font-size:28pt;font-weight:600}
+  .list .sub{color:#6b6560;font-size:11pt;margin-bottom:8mm}
+  .list table{width:100%;border-collapse:collapse;font-size:11pt}
+  .list td{padding:2.4mm 0;border-bottom:1px solid #eae5dd;vertical-align:baseline}
+  .list td.d{color:#6b6560;width:34mm;white-space:nowrap}
+  .list tr.sun td{font-weight:600}
+  .list tr.sun td.d{color:#8B5E3C}
+  .list .after{margin-top:8mm;display:flex;align-items:center;gap:6mm;
+               border-top:1px solid #e0dad1;padding-top:6mm}
+  .list .after .txt{font-size:10pt;color:#3a3630}
+
+  #loading,#failed{text-align:center;padding:90px 0;color:var(--muted)}
+
+  @media print{
+    @page{size:A4;margin:0}
+    nav,footer,.noprint{display:none!important}
+    body{background:#fff}
+    .preview{box-shadow:none;margin:0;border-radius:0}
+    .sheet{width:auto;min-height:auto;margin:0;padding:14mm 12mm}
+    .slip{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<nav class="noprint"><div class="wrap">
+  <a class="brand" href="../"><img src="../assets/icon.png" alt="">Letter To God</a>
+  <div class="navlinks"><a href="../churches/">For churches</a></div>
+</div></nav>
+
+<div id="loading" class="noprint">Loading…</div>
+
+<div id="failed" class="noprint" hidden>
+  <h2 class="serif">That church is not listed</h2>
+  <p>Printables are made per church, so the link needs a church on it.</p>
+  <p><a href="../churches/">How a church joins &rarr;</a></p>
+</div>
+
+<main id="page" hidden>
+  <section class="noprint" style="padding-bottom:0"><div class="wrap"><div class="narrow">
+    <h1 style="font-size:34px">Posters and slips</h1>
+    <p id="forWho"></p>
+    <p class="muted" style="font-size:14px">
+      Each one carries a code that opens straight to this church&rsquo;s page. Pick a
+      sheet, print it on plain A4. Black and white is fine.
+    </p>
+
+    <div class="picker">
+      <button class="pick" data-sheet="poster" aria-pressed="true">
+        <b>Notice board poster</b><span>One A4 page, large code</span>
+      </button>
+      <button class="pick" data-sheet="slips" aria-pressed="false">
+        <b>Pew slips</b><span>Eight to a page, cut up</span>
+      </button>
+      <button class="pick" data-sheet="list" aria-pressed="false">
+        <b>This month&rsquo;s readings</b><span>Dates and chapters</span>
+      </button>
+    </div>
+
+    <button class="btn primary" id="printBtn">Print this sheet</button>
+    <span class="muted" style="font-size:14px;margin-left:14px">or save as PDF from the print dialog</span>
+  </div></div></section>
+
+  <section style="padding-top:26px"><div class="wrap">
+    <div class="preview"><div id="sheet"></div></div>
+  </div></section>
+</main>
+
+<footer class="noprint"><div class="wrap">
+  <div class="brand serif" style="justify-content:center;margin-bottom:14px">Letter To God</div>
+  <a href="../privacy/">Privacy</a>
+  <a href="../terms/">Terms</a>
+  <a href="mailto:hello@letterstogodapp.org">Contact</a>
+</div></footer>
+
+<script type="module">
+import { churchIdFromUrl, fetchChurch, fetchPlans, planState,
+         describeChapters, dateForDay, dayNumber } from '../assets/plan.js';
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) =>
+  ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+let church = null, plans = null, pageUrl = '';
+
+/** A QR code, drawn into a fresh element. Falls back to nothing rather than
+    a broken box — the URL is printed underneath every code on every sheet. */
+function qr(size) {
+  const host = document.createElement('div');
+  host.className = 'qrhost';
+  try {
+    new QRCode(host, {
+      text: pageUrl, width: size, height: size,
+      colorDark: '#141414', colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+  } catch { /* library blocked; the printed URL still works */ }
+  return host;
+}
+
+function mount(el, into) { into.querySelectorAll('.qrwrap,.q').forEach((slot) => {
+  if (slot.dataset.size) slot.appendChild(qr(Number(slot.dataset.size)));
+}); }
+
+function poster() {
+  return `<div class="sheet"><div class="poster">
+    <div class="top">
+      <div class="kicker">Read the Bible together</div>
+      <h1>Join us in<br>God&rsquo;s word</h1>
+      <div class="church">${esc(church.name)}</div>
+    </div>
+    <div>
+      <div class="qrwrap" data-size="300"></div>
+      <div class="url">${esc(pageUrl.replace('https://', ''))}</div>
+    </div>
+    <div style="width:100%">
+      <div class="steps">
+        <div><b>1. Point your camera</b>at the code above.</div>
+        <div><b>2. Get the app</b>Letter To God, on iPhone or Android.</div>
+        <div><b>3. Read along</b>with the rest of us, a chapter at a time.</div>
+      </div>
+      <div class="foot">
+        Whatever you read counts towards ${esc(church.name)}. No account, nothing to pay
+        beyond the app itself, and nothing is collected about you.
+      </div>
+    </div>
+  </div></div>`;
+}
+
+function slips() {
+  const one = `
+    <div class="slip">
+      <div class="t">Read the Bible<br>with ${esc(church.name)}</div>
+      <div class="c">${esc(church.town)}</div>
+      <div class="q" data-size="104"></div>
+      <div class="u">${esc(pageUrl.replace('https://', ''))}</div>
+    </div>`;
+  return `<div class="sheet" style="padding:10mm"><div class="slips">${one.repeat(8)}</div></div>`;
+}
+
+function list() {
+  if (!church.plan) {
+    return `<div class="sheet"><div class="list">
+      <h1>Reading together</h1>
+      <div class="sub">${esc(church.name)}</div>
+      <p style="font-size:11pt;color:#3a3630">
+        This church has not set a reading plan, so there is no list to print yet.
+        The poster and the pew slips still work.</p>
+    </div></div>`;
+  }
+  const plan = plans.find((p) => p.id === church.plan.id);
+  if (!plan) return `<div class="sheet"><div class="list"><h1>Reading together</h1></div></div>`;
+
+  // The next thirty days from today, or from the start if it has not begun.
+  const from = Math.max(1, dayNumber(church.plan.start));
+  const rows = [];
+  for (let n = from; n < from + 30 && n <= plan.days.length; n++) {
+    const d = plan.days.find((x) => x.day === n);
+    if (!d) continue;
+    const when = dateForDay(church.plan.start, n);
+    rows.push(`<tr class="${when.getDay() === 0 ? 'sun' : ''}">
+      <td class="d">${when.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}</td>
+      <td>${esc(describeChapters(d.chapters))}</td>
+    </tr>`);
+  }
+
+  return `<div class="sheet"><div class="list">
+    <h1>${esc(plan.title)}</h1>
+    <div class="sub">${esc(church.name)} &middot; day ${from} of ${plan.days.length}</div>
+    <table>${rows.join('')}</table>
+    <div class="after">
+      <div class="q" data-size="96"></div>
+      <div class="txt">
+        <b>Read along in the app.</b><br>
+        Letter To God, on iPhone and Android. Whatever you read counts towards
+        ${esc(church.name)}.<br>
+        <span style="color:#6b6560">${esc(pageUrl.replace('https://', ''))}</span>
+      </div>
+    </div>
+  </div></div>`;
+}
+
+const SHEETS = { poster, slips, list };
+
+function show(which) {
+  const host = $('sheet');
+  host.innerHTML = SHEETS[which]();
+  mount(null, host);
+  document.querySelectorAll('.pick').forEach((b) =>
+    b.setAttribute('aria-pressed', String(b.dataset.sheet === which)));
+}
+
+(async () => {
+  const id = churchIdFromUrl();
+  if (!id) { $('loading').hidden = true; $('failed').hidden = false; return; }
+  try {
+    [church, plans] = await Promise.all([fetchChurch(id), fetchPlans('..')]);
+    if (!church) throw new Error('no church');
+    // Always the real domain. A poster is printed once and lives on a wall for
+    // years, so it must not carry whichever host this page happened to load from.
+    pageUrl = `https://letterstogodapp.org/c/?church=${encodeURIComponent(id)}`;
+    $('forWho').textContent = `For ${church.name}, ${church.town}.`;
+    show('poster');
+    document.querySelectorAll('.pick').forEach((b) =>
+      b.addEventListener('click', () => show(b.dataset.sheet)));
+    $('printBtn').addEventListener('click', () => window.print());
+    $('loading').hidden = true;
+    $('page').hidden = false;
+  } catch {
+    $('loading').hidden = true;
+    $('failed').hidden = false;
+  }
+})();
+</script>
+</body>
+</html>
