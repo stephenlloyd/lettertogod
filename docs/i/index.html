@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>You have been invited to read — Letter To God</title>
+<meta name="description" content="Someone has asked you to read the Bible alongside them.">
+<meta property="og:title" content="Read the Bible with me">
+<meta property="og:description" content="An invitation to read along, a chapter at a time.">
+<meta property="og:type" content="website">
+<link rel="icon" href="../assets/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  .hero{text-align:center;padding:80px 0 20px;
+        background:radial-gradient(1200px 500px at 50% -10%, #2b2618 0%, var(--bg) 60%)}
+  .hero img.appicon{width:88px;height:88px;border-radius:20px;
+                    box-shadow:0 18px 50px rgba(0,0,0,.5);margin-bottom:24px}
+  .codebox{background:var(--surface);border:1px solid var(--gold);border-radius:18px;
+           padding:26px;text-align:center;margin:28px 0}
+  .codebox .lab{color:var(--muted);font-size:11px;letter-spacing:2px;text-transform:uppercase}
+  /* Inter, not the serif: Cormorant sets old-style figures, so the 9 in a code
+     drops below the baseline and reads as a g. A code gets read aloud. */
+  .codebox .code{font-family:Inter,system-ui,sans-serif;font-size:clamp(34px,9vw,46px);
+                 font-weight:600;letter-spacing:9px;color:var(--text);margin-top:10px;
+                 padding-left:9px;font-variant-numeric:lining-nums tabular-nums}
+  .badges{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+  .badge{display:inline-flex;align-items:center;gap:10px;background:var(--surface);
+         border:1px solid var(--line);border-radius:14px;padding:12px 20px;color:var(--text);font-size:15px}
+  .badge:hover{border-color:var(--gold)}
+  .badge small{display:block;color:var(--muted);font-size:11px;letter-spacing:.5px;text-transform:uppercase}
+  .badge b{font-size:16px;font-weight:600}
+  .steps{counter-reset:s;list-style:none;margin:28px 0}
+  .steps li{counter-increment:s;position:relative;padding:0 0 18px 46px;color:var(--muted);font-size:16px}
+  .steps li b{color:var(--text);font-weight:600}
+  .steps li::before{content:counter(s);position:absolute;left:0;top:-1px;width:28px;height:28px;
+    border-radius:50%;border:1px solid var(--gold);color:var(--gold);font-size:13px;
+    display:flex;align-items:center;justify-content:center}
+  #loading,#failed{text-align:center;padding:100px 0;color:var(--muted)}
+</style>
+</head>
+<body>
+<nav><div class="wrap">
+  <a class="brand" href="../"><img src="../assets/icon.png" alt="">Letter To God</a>
+  <div class="navlinks"><a href="../certificates/">How it works</a></div>
+</div></nav>
+
+<div id="loading">Loading…</div>
+
+<div id="failed" hidden>
+  <h2 class="serif">That invitation was not found</h2>
+  <p>The code may have been mistyped. You can still get the app without one.</p>
+  <p><a href="../">Letter To God &rarr;</a></p>
+</div>
+
+<main id="page" hidden>
+  <header class="hero"><div class="wrap">
+    <img class="appicon" src="../assets/icon.png" alt="">
+    <h1>Read the Bible<br>alongside a friend</h1>
+    <p class="muted" id="who" style="margin-top:16px;font-size:17px"></p>
+  </div></header>
+
+  <section style="padding-top:24px"><div class="wrap"><div class="narrow">
+    <div class="codebox">
+      <div class="lab">Their invitation code</div>
+      <div class="code" id="code"></div>
+      <a class="btn primary" id="openApp" href="#" style="margin-top:18px">Open in the app</a>
+      <p class="muted" style="font-size:13px;margin:14px 0 0">
+        Nothing happens if the app is not installed yet &mdash; get it below, then come back.
+      </p>
+    </div>
+
+    <div class="badges">
+      <a class="badge" href="https://apps.apple.com/app/id6784824470">
+        <span>&#63743;</span><span><small>Download on the</small><b>App Store</b></span>
+      </a>
+      <a class="badge" href="https://play.google.com/store/apps/details?id=com.lettertogod.app">
+        <span>&#9654;</span><span><small>Get it on</small><b>Google Play</b></span>
+      </a>
+    </div>
+
+    <h2 style="text-align:center;margin-top:56px">What happens next</h2>
+    <ol class="steps">
+      <li><b>Get the app</b> and open it.</li>
+      <li><b>Enter the code above</b> when it asks whether you were invited.</li>
+      <li><b>Read a chapter</b> whenever you like. Answer one question about it, and the chapter is recorded.</li>
+      <li><b>Give what you read to your church</b>, if you go to one.</li>
+    </ol>
+
+    <div class="card" style="margin-top:10px">
+      <p style="margin-bottom:0">
+        <strong>Being straightforward.</strong> An invitation earns nobody anything
+        &mdash; not the person who sent it, and not you. There is no money in this and
+        there is nothing to sell you beyond the app itself. It is a way of reading
+        scripture alongside somebody, and that is all it is.
+      </p>
+    </div>
+  </div></div></section>
+
+  <section class="band" id="churchBand" hidden><div class="wrap"><div class="narrow" style="text-align:center">
+    <h2>They read with</h2>
+    <p style="font-size:19px;color:var(--text)" id="churchName"></p>
+    <p><a id="churchLink" href="#">See what that congregation is reading &rarr;</a></p>
+  </div></div></section>
+</main>
+
+<footer><div class="wrap">
+  <div class="brand serif" style="justify-content:center;margin-bottom:14px">Letter To God</div>
+  <a href="../privacy/">Privacy</a>
+  <a href="../terms/">Terms</a>
+  <a href="../support/">Support</a>
+  <a href="mailto:hello@letterstogodapp.org">Contact</a>
+</div></footer>
+
+<script type="module">
+import { API } from '../assets/plan.js';
+
+const $ = (id) => document.getElementById(id);
+
+function fail() { $('loading').hidden = true; $('failed').hidden = false; }
+
+(async () => {
+  const raw = new URLSearchParams(location.search).get('c') ?? '';
+  const code = raw.trim().toUpperCase();
+  if (!/^[0-9A-Z]{6}$/.test(code)) return fail();
+
+  try {
+    const r = await fetch(`${API}/v1/invites/${encodeURIComponent(code)}`);
+    if (!r.ok) return fail();
+    const invite = await r.json();
+
+    $('code').textContent = invite.code;
+    $('openApp').href = `lettertogod://invite?code=${encodeURIComponent(invite.code)}`;
+
+    $('who').textContent = invite.chapters > 0
+      ? `${invite.people} ${invite.people === 1 ? 'person has' : 'people have'} come in on this invitation, and read ${invite.chapters.toLocaleString()} ${invite.chapters === 1 ? 'chapter' : 'chapters'} between them.`
+      : 'Someone has asked you to read along with them.';
+
+    if (invite.church) {
+      $('churchName').textContent = `${invite.church.name}, ${invite.church.town}`;
+      $('churchLink').href = `../c/?church=${encodeURIComponent(invite.church.id)}`;
+      $('churchBand').hidden = false;
+    }
+
+    $('loading').hidden = true;
+    $('page').hidden = false;
+  } catch {
+    fail();
+  }
+})();
+</script>
+</body>
+</html>
