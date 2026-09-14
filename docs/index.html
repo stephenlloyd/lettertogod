@@ -3,131 +3,182 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Letter To God — Craft your prayer. Find your verse.</title>
-<meta name="description" content="A gentle, guided prayer companion rooted in the Christian Bible. Compose personal prayers step by step, discover Bible verses, and keep a private, on-device prayer archive.">
-<meta property="og:title" content="Letter To God — Prayer Companion">
-<meta property="og:description" content="Craft your prayer. Find your verse. A gentle, guided prayer companion rooted in the Christian Bible.">
+<title>Letter To God — a prayer companion you pay for once</title>
+<meta name="description" content="Write real prayers, read the whole Bible offline, and keep it all on your own phone. One payment, no subscription, no account, nothing collected about you.">
+<meta property="og:title" content="Letter To God">
+<meta property="og:description" content="A prayer companion you pay for once. No subscription, no account, nothing collected about you.">
 <meta property="og:type" content="website">
+<meta property="og:image" content="https://letterstogodapp.org/assets/shots/01-home.jpg">
 <link rel="icon" href="assets/icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
 <style>
-  :root{
-    --bg:#1C1B18; --bg2:#232019; --surface:#2A2825; --line:#3A3733;
-    --text:#EDEBE6; --muted:#A49E96; --gold:#C49A6C; --gold-soft:#D9B487; --cream:#F7F5F0;
+  .hero{text-align:center;padding:84px 0 0;
+        background:radial-gradient(1200px 560px at 50% -10%, #2b2618 0%, var(--bg) 62%)}
+  .hero h1{font-size:clamp(38px,6.4vw,64px);margin-bottom:18px}
+  .hero .lead{max-width:600px;margin:0 auto;color:var(--muted);font-size:19px;line-height:1.55}
+
+  /* Store badges. Official artwork, matched to the same optical height. */
+  .stores{display:flex;gap:14px;justify-content:center;align-items:center;
+          flex-wrap:wrap;margin-top:30px}
+  .stores a{display:block;transition:.2s}
+  .stores a:hover{transform:translateY(-2px)}
+  .stores img{display:block;height:54px;width:auto}
+  .soon{display:inline-flex;flex-direction:column;justify-content:center;height:54px;
+        padding:0 20px;border:1px solid var(--line);border-radius:10px;
+        color:var(--muted);font-size:13px;line-height:1.3;text-align:left}
+  .soon b{color:var(--text);font-size:15px;font-weight:600}
+  .price{margin-top:20px;color:var(--muted);font-size:15px}
+  .price b{color:var(--gold-soft)}
+
+  .shotrow{display:flex;gap:26px;justify-content:center;align-items:flex-end;
+           margin-top:56px;padding-bottom:0}
+  .shotrow img{width:270px;border-radius:18px 18px 0 0;display:block;
+               box-shadow:0 -8px 60px rgba(0,0,0,.55)}
+  .shotrow img:nth-child(2){width:310px}
+  @media(max-width:860px){
+    .shotrow img:nth-child(1),.shotrow img:nth-child(3){display:none}
+    .shotrow img:nth-child(2){width:min(320px,80vw)}
   }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;line-height:1.65;-webkit-font-smoothing:antialiased}
-  .serif{font-family:'Cormorant Garamond',Georgia,serif}
-  a{color:var(--gold-soft);text-decoration:none}
-  .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
-  /* Nav */
-  nav{position:sticky;top:0;z-index:10;background:rgba(28,27,24,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
-  .brand{display:flex;align-items:center;gap:12px;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--text)}
-  .brand img{width:32px;height:32px;border-radius:8px}
-  .navlinks a{color:var(--muted);margin-left:24px;font-size:15px}
-  .navlinks a:hover{color:var(--text)}
-  /* Hero */
-  .hero{text-align:center;padding:96px 0 72px;background:radial-gradient(1200px 500px at 50% -10%, #2b2618 0%, var(--bg) 60%)}
-  .hero img.appicon{width:104px;height:104px;border-radius:24px;box-shadow:0 18px 50px rgba(0,0,0,.5);margin-bottom:28px}
-  .hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,7vw,68px);font-weight:600;line-height:1.05;letter-spacing:.5px}
-  .hero .tag{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(20px,3.4vw,28px);color:var(--gold-soft);margin-top:14px}
-  .hero p.lead{max-width:560px;margin:22px auto 0;color:var(--muted);font-size:18px}
-  .badges{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:36px}
-  .badge{display:inline-flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 20px;color:var(--text);font-size:15px;transition:.2s}
-  .badge:hover{border-color:var(--gold);transform:translateY(-2px)}
-  .badge small{display:block;color:var(--muted);font-size:11px;letter-spacing:.5px;text-transform:uppercase}
-  .badge b{font-size:16px;font-weight:600}
-  .badge.soon{opacity:.6}
-  /* Sections */
-  section{padding:80px 0}
-  .eyebrow{text-align:center;color:var(--gold);font-size:13px;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
-  h2.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,5vw,44px);font-weight:600;text-align:center;margin-bottom:52px}
-  .features{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
-  .card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:32px 26px;transition:.2s}
-  .card:hover{border-color:var(--gold);transform:translateY(-3px)}
-  .card .ic{font-size:30px;margin-bottom:16px}
-  .card h3{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;margin-bottom:10px}
-  .card p{color:var(--muted);font-size:15.5px}
-  /* About */
-  .about{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-  .about .inner{max-width:640px;margin:0 auto;text-align:center}
-  .about p{color:var(--muted);font-size:17px;margin-top:14px}
-  .about .contact{margin-top:26px;font-size:18px}
-  .privacy-note{margin-top:20px;font-size:14px;color:var(--muted)}
-  /* Footer */
-  footer{padding:44px 0;text-align:center;color:var(--muted);font-size:14px;border-top:1px solid var(--line)}
-  footer a{margin:0 12px;color:var(--muted)}
-  footer a:hover{color:var(--text)}
-  @media(max-width:760px){.features{grid-template-columns:1fr}.navlinks{display:none}section{padding:60px 0}}
+
+  .facts{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:8px}
+  .fact{text-align:center}
+  .fact .big{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,3.4vw,34px);
+             font-weight:600;color:var(--gold-soft);line-height:1.15}
+  .fact p{margin-top:10px;font-size:15.5px}
+  @media(max-width:760px){.facts{grid-template-columns:1fr;gap:32px}}
+
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+  .split img{width:100%;max-width:310px;border-radius:20px;display:block;margin:0 auto;
+             box-shadow:0 20px 60px rgba(0,0,0,.5)}
+  .split h2{text-align:left;margin-bottom:16px}
+  @media(max-width:860px){.split{grid-template-columns:1fr;gap:32px}.split h2{text-align:center}
+                          .split .txt{text-align:center}}
+
+  .church{background:linear-gradient(180deg,var(--bg2),#26221a);
+          border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .flow{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin:30px 0 8px}
+  .flow span{background:var(--surface);border:1px solid var(--line);border-radius:999px;
+             padding:9px 16px;font-size:14.5px;color:var(--text)}
+  .flow i{color:var(--gold);font-style:normal}
+
+  .cta{text-align:center}
+  .cta h2{margin-bottom:14px}
 </style>
 </head>
 <body>
 <nav><div class="wrap">
-  <div class="brand"><img src="assets/icon.png" alt="Letter To God icon">Letter To God</div>
+  <a class="brand" href="./"><img src="assets/icon.png" alt="">Letter To God</a>
   <div class="navlinks">
-    <a href="#features">Features</a>
-    <a href="certificates/">Your church</a>
-    <a href="#about">About</a>
+    <a href="#what">What it does</a>
+    <a href="#church">For churches</a>
     <a href="privacy/">Privacy</a>
     <a href="support/">Support</a>
   </div>
 </div></nav>
 
 <header class="hero"><div class="wrap">
-  <img class="appicon" src="assets/icon.png" alt="Letter To God app icon">
-  <h1>Letter To God</h1>
-  <div class="tag">Craft your prayer. Find your verse.</div>
-  <p class="lead">A gentle, guided prayer companion rooted in the Christian Bible.</p>
-  <div class="badges">
-    <a class="badge" href="https://apps.apple.com/app/id6784824470">
-      <span>&#63743;</span><span><small>Download on the</small><b>App Store</b></span>
+  <h1>Prayer that stays<br>between you and God</h1>
+  <p class="lead">
+    Write real prayers with gentle guidance. Read the whole Bible, offline.
+    Everything you write stays on your phone &mdash; there is no account to make,
+    and nothing about you is collected.
+  </p>
+
+  <div class="stores">
+    <a href="https://apps.apple.com/app/id6784824470" aria-label="Download on the App Store">
+      <img src="assets/appstore-badge.svg" alt="Download on the App Store">
     </a>
-    <a class="badge soon" href="https://play.google.com/store/apps/details?id=com.lettertogod.app">
-      <span>&#9654;</span><span><small>Coming soon to</small><b>Google Play</b></span>
-    </a>
+    <div class="soon"><span>Coming soon to</span><b>Google Play</b></div>
+  </div>
+  <p class="price">One payment. <b>No subscription, ever.</b></p>
+
+  <div class="shotrow">
+    <img src="assets/shots/02-bible.jpg" alt="The Bible, built into the app and working offline">
+    <img src="assets/shots/01-home.jpg" alt="The home screen, with today's verse">
+    <img src="assets/shots/03-review.jpg" alt="A finished prayer">
   </div>
 </div></header>
 
-<section id="features"><div class="wrap">
-  <div class="eyebrow">What it does</div>
-  <h2 class="section-title">A quiet space to pray</h2>
-  <div class="features">
-    <div class="card">
-      <div class="ic">&#128220;</div>
-      <h3>Guided prayer</h3>
-      <p>Compose a personal prayer step by step &mdash; adoration, thanksgiving, and asking &mdash; with gentle prompts, or write freely in your own words.</p>
+<section class="band"><div class="wrap">
+  <div class="facts">
+    <div class="fact">
+      <div class="big">Pay once</div>
+      <p>Most prayer apps cost £50&ndash;£70 <em>every year</em>. This one asks for a single payment and then leaves you alone.</p>
     </div>
-    <div class="card">
-      <div class="ic">&#10015;</div>
-      <h3>Verse discovery</h3>
-      <p>Discover Bible verses that meet the moment. The full Berean Standard Bible is built in and works completely offline.</p>
+    <div class="fact">
+      <div class="big">No account</div>
+      <p>No email, no password, no sign-up. Your prayers never leave your phone, so nobody can read them &mdash; us included.</p>
     </div>
-    <div class="card">
-      <div class="ic">&#128274;</div>
-      <h3>Private archive</h3>
-      <p>Keep a personal record of your prayers. Everything stays on your device &mdash; no account, no cloud, no one else can read it.</p>
+    <div class="fact">
+      <div class="big">Works anywhere</div>
+      <p>The whole Berean Standard Bible is built in. No signal needed, on a train, on a plane, or in a hospital corridor.</p>
     </div>
   </div>
 </div></section>
 
-<section><div class="wrap"><div style="max-width:660px;margin:0 auto;text-align:center">
-  <div class="eyebrow">Reading together</div>
-  <h2 class="section-title" style="margin-bottom:18px">Give what you read to your church</h2>
-  <p style="color:var(--muted);font-size:17px">Finish a chapter, answer one question about it, and the chapter is recorded. Whenever you like, give everything you have read to your church, so the reading counts for the people you sit with on Sunday.</p>
-  <a class="badge" style="margin-top:26px" href="certificates/"><span>&#10015;</span><span><small>How it works</small><b>Read the Bible, give it to your church</b></span></a>
+<section id="what"><div class="wrap">
+  <div class="split">
+    <div class="txt">
+      <h2>Not sure how to start?</h2>
+      <p>Most of us aren&rsquo;t. The app walks you through it &mdash; who you&rsquo;re praying for,
+      what season you&rsquo;re in, what you want to say &mdash; and hands you back something
+      in your own words, with a verse that fits.</p>
+      <p>Or ignore all of it and write freely. Both are there.</p>
+    </div>
+    <img src="assets/shots/03-review.jpg" alt="A completed prayer with its verse">
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="split">
+    <img src="assets/shots/05-devotional.jpg" alt="A daily devotional reading">
+    <div class="txt">
+      <h2>A verse every morning</h2>
+      <p>One verse a day, with a short note on where it comes from and what it meant
+      to the people who first heard it. Enough to carry with you, never a homework
+      assignment.</p>
+      <p>Read a chapter when you want more. All 1,189 of them are here.</p>
+    </div>
+  </div>
+</div></section>
+
+<section id="church" class="church"><div class="wrap"><div class="narrow" style="text-align:center">
+  <div style="color:var(--gold);font-size:13px;letter-spacing:2px;text-transform:uppercase">Reading together</div>
+  <h2 style="text-align:center;margin-top:12px">Read with your church</h2>
+  <p>If your church joins, everyone sees the same chapter on the same day &mdash; and
+  the app works out what you have left to catch up on, from what you have actually
+  read.</p>
+
+  <div class="flow">
+    <span>Your church picks a plan</span><i>&rarr;</i>
+    <span>You read along</span><i>&rarr;</i>
+    <span>It counts towards them</span>
+  </div>
+
+  <p style="font-size:14.5px">
+    Free for the church, free for you, and nobody is asked for money.
+    They get posters and pew slips to print, and a page showing what the
+    congregation has read together.
+  </p>
+  <p style="margin-top:22px"><a href="churches/">How a church joins &rarr;</a></p>
 </div></div></section>
 
-<section id="about" class="about"><div class="wrap"><div class="inner">
-  <div class="eyebrow">About</div>
-  <h2 class="section-title">Made with care</h2>
-  <p>Letter To God is a small, independent app built to help people pray and grow in God&rsquo;s word &mdash; warmly, reverently, and without noise. It is a one-time purchase &mdash; no subscriptions, no adverts, and no account.</p>
-  <p class="contact">Questions or feedback? <a href="mailto:hello@letterstogodapp.org">hello@letterstogodapp.org</a></p>
-  <p class="privacy-note">No personal data is collected. No accounts. All your prayers stay on your device.<br>
-  Read our full <a href="privacy/">Privacy Policy</a>.</p>
+<section class="cta"><div class="wrap"><div class="narrow">
+  <h2>Start tonight</h2>
+  <p>One payment, and it&rsquo;s yours.</p>
+  <div class="stores" style="margin-top:24px">
+    <a href="https://apps.apple.com/app/id6784824470" aria-label="Download on the App Store">
+      <img src="assets/appstore-badge.svg" alt="Download on the App Store">
+    </a>
+    <div class="soon"><span>Coming soon to</span><b>Google Play</b></div>
+  </div>
+  <p class="muted" style="margin-top:30px;font-size:14.5px">
+    Questions? <a href="mailto:hello@letterstogodapp.org">hello@letterstogodapp.org</a>
+    reaches a person, not a form.
+  </p>
 </div></div></section>
 
 <footer><div class="wrap">
@@ -135,6 +186,7 @@
   <a href="privacy/">Privacy</a>
   <a href="terms/">Terms</a>
   <a href="support/">Support</a>
+  <a href="churches/">For churches</a>
   <a href="mailto:hello@letterstogodapp.org">Contact</a>
   <div style="margin-top:18px;opacity:.7">&copy; 2026 Letter To God</div>
 </div></footer>
