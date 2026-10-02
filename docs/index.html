@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Letter To God — a prayer companion you pay for once</title>
-<meta name="description" content="Write real prayers, read the whole Bible offline, and keep it all on your own phone. One payment, no subscription, no account, nothing collected about you.">
+<meta name="description" content="Write real prayers with gentle guidance. The whole Bible, offline. One payment, no subscription, no account, and nothing collected about you. On iPhone and Android.">
 <meta property="og:title" content="Letter To God">
 <meta property="og:description" content="A prayer companion you pay for once. No subscription, no account, nothing collected about you.">
 <meta property="og:type" content="website">
@@ -15,57 +15,66 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/site.css">
 <style>
-  .hero{text-align:center;padding:84px 0 0;
-        background:radial-gradient(1200px 560px at 50% -10%, #2b2618 0%, var(--bg) 62%)}
-  .hero h1{font-size:clamp(38px,6.4vw,64px);margin-bottom:18px}
-  .hero .lead{max-width:600px;margin:0 auto;color:var(--muted);font-size:19px;line-height:1.55}
-
-  /* Store badges. Official artwork, matched to the same optical height. */
-  .stores{display:flex;gap:14px;justify-content:center;align-items:center;
-          flex-wrap:wrap;margin-top:30px}
-  .stores a{display:block;transition:.2s}
+  /* ---- Hero: icon, promise, both badges, one phone shown properly ---- */
+  .hero{padding:68px 0 0;background:radial-gradient(1100px 620px at 50% -16%, #302a1c 0%, var(--bg) 64%)}
+  .hero .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:52px;align-items:center}
+  .hero .appicon{width:72px;height:72px;border-radius:18px;
+                 box-shadow:0 14px 40px rgba(0,0,0,.5);margin-bottom:22px}
+  .hero h1{font-size:clamp(34px,4.6vw,52px);margin-bottom:18px}
+  .hero .lead{color:var(--muted);font-size:18px;line-height:1.58;max-width:30em}
+  .stores{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:28px}
+  .stores a{display:block;transition:.18s}
   .stores a:hover{transform:translateY(-2px)}
-  .stores img{display:block;height:54px;width:auto}
-  .soon{display:inline-flex;flex-direction:column;justify-content:center;height:54px;
-        padding:0 20px;border:1px solid var(--line);border-radius:10px;
-        color:var(--muted);font-size:13px;line-height:1.3;text-align:left}
-  .soon b{color:var(--text);font-size:15px;font-weight:600}
-  .price{margin-top:20px;color:var(--muted);font-size:15px}
+  .stores img{display:block;height:52px;width:auto}
+  /* Google's badge ships with transparent padding baked in, so matching the
+     raw heights makes it look smaller than Apple's. Match what the eye sees. */
+  .stores img[src*="play-badge"]{height:62px;margin:-5px 0}
+  .price{margin-top:18px;color:var(--muted);font-size:15px}
   .price b{color:var(--gold-soft)}
 
-  .shotrow{display:flex;gap:26px;justify-content:center;align-items:flex-end;
-           margin-top:56px;padding-bottom:0}
-  .shotrow img{width:270px;border-radius:18px 18px 0 0;display:block;
-               box-shadow:0 -8px 60px rgba(0,0,0,.55)}
-  .shotrow img:nth-child(2){width:310px}
-  @media(max-width:860px){
-    .shotrow img:nth-child(1),.shotrow img:nth-child(3){display:none}
-    .shotrow img:nth-child(2){width:min(320px,80vw)}
+  /* A phone that looks like a phone, not a sliced rectangle. */
+  .phone{position:relative;margin:0 auto;width:min(300px,78vw)}
+  .phone .screen{width:100%;display:block;border-radius:30px;
+                 border:1px solid rgba(255,255,255,.10);
+                 box-shadow:0 30px 80px rgba(0,0,0,.6)}
+  @media(max-width:880px){
+    .hero{padding-top:52px}
+    .hero .grid{grid-template-columns:1fr;gap:36px;text-align:center}
+    .hero .lead{margin:0 auto}
+    .stores{justify-content:center}
+    .hero .appicon{margin-left:auto;margin-right:auto}
   }
 
-  .facts{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:8px}
-  .fact{text-align:center}
-  .fact .big{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,3.4vw,34px);
-             font-weight:600;color:var(--gold-soft);line-height:1.15}
-  .fact p{margin-top:10px;font-size:15.5px}
-  @media(max-width:760px){.facts{grid-template-columns:1fr;gap:32px}}
+  /* ---- Three hard facts ---- */
+  .facts{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+  .fact .big{font-family:'Cormorant Garamond',serif;font-size:clamp(25px,3.2vw,32px);
+             font-weight:600;color:var(--gold-soft);line-height:1.15;margin-bottom:10px}
+  .fact p{font-size:15.5px;margin:0}
+  @media(max-width:760px){.facts{grid-template-columns:1fr;gap:30px;text-align:center}}
 
-  .split{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
-  .split img{width:100%;max-width:310px;border-radius:20px;display:block;margin:0 auto;
-             box-shadow:0 20px 60px rgba(0,0,0,.5)}
-  .split h2{text-align:left;margin-bottom:16px}
-  @media(max-width:860px){.split{grid-template-columns:1fr;gap:32px}.split h2{text-align:center}
-                          .split .txt{text-align:center}}
+  /* ---- Alternating feature rows ---- */
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+  .row + .row{margin-top:84px}
+  .row.flip .txt{order:2}
+  .row h2{text-align:left;margin-bottom:14px;font-size:clamp(24px,3.4vw,33px)}
+  .row p{font-size:16.5px}
+  /* Not scoped to .row — the church band uses it outside one. */
+  .eyebrow{color:var(--gold);font-size:12px;letter-spacing:2px;
+           text-transform:uppercase;margin-bottom:10px}
+  @media(max-width:880px){
+    .row,.row.flip{grid-template-columns:1fr;gap:28px}
+    .row.flip .txt{order:0}
+    .row h2{text-align:center}.row .txt{text-align:center}
+  }
 
-  .church{background:linear-gradient(180deg,var(--bg2),#26221a);
+  .church{background:linear-gradient(180deg,var(--bg2),#272318);
           border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-  .flow{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin:30px 0 8px}
+  .flow{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin:28px 0 10px}
   .flow span{background:var(--surface);border:1px solid var(--line);border-radius:999px;
-             padding:9px 16px;font-size:14.5px;color:var(--text)}
+             padding:9px 17px;font-size:14.5px;color:var(--text)}
   .flow i{color:var(--gold);font-style:normal}
 
-  .cta{text-align:center}
-  .cta h2{margin-bottom:14px}
+  .closing{text-align:center}
 </style>
 </head>
 <body>
@@ -80,25 +89,28 @@
 </div></nav>
 
 <header class="hero"><div class="wrap">
-  <h1>Prayer that stays<br>between you and God</h1>
-  <p class="lead">
-    Write real prayers with gentle guidance. Read the whole Bible, offline.
-    Everything you write stays on your phone &mdash; there is no account to make,
-    and nothing about you is collected.
-  </p>
-
-  <div class="stores">
-    <a href="https://apps.apple.com/app/id6784824470" aria-label="Download on the App Store">
-      <img src="assets/appstore-badge.svg" alt="Download on the App Store">
-    </a>
-    <div class="soon"><span>Coming soon to</span><b>Google Play</b></div>
-  </div>
-  <p class="price">One payment. <b>No subscription, ever.</b></p>
-
-  <div class="shotrow">
-    <img src="assets/shots/02-bible.jpg" alt="The Bible, built into the app and working offline">
-    <img src="assets/shots/01-home.jpg" alt="The home screen, with today's verse">
-    <img src="assets/shots/03-review.jpg" alt="A finished prayer">
+  <div class="grid">
+    <div>
+      <img class="appicon" src="assets/icon.png" alt="Letter To God app icon">
+      <h1>Prayer that stays<br>between you and God</h1>
+      <p class="lead">
+        Write real prayers with gentle guidance. Read the whole Bible, offline.
+        Everything you write stays on your phone &mdash; there is no account to
+        make, and nothing about you is collected.
+      </p>
+      <div class="stores">
+        <a href="https://apps.apple.com/gb/app/letter-to-god-prayer-journal/id6784824470" aria-label="Download on the App Store">
+          <img src="assets/appstore-badge.svg" alt="Download on the App Store">
+        </a>
+        <a href="https://play.google.com/store/apps/details?id=com.lettertogod.app" aria-label="Get it on Google Play">
+          <img src="assets/play-badge.png" alt="Get it on Google Play">
+        </a>
+      </div>
+      <p class="price">One payment. <b>No subscription, ever.</b></p>
+    </div>
+    <div class="phone">
+      <img class="screen" src="assets/shots/01-home.jpg" alt="The Letter To God home screen, showing today's verse and today's walk">
+    </div>
   </div>
 </div></header>
 
@@ -114,68 +126,83 @@
     </div>
     <div class="fact">
       <div class="big">Works anywhere</div>
-      <p>The whole Berean Standard Bible is built in. No signal needed, on a train, on a plane, or in a hospital corridor.</p>
+      <p>The whole Bible is built in. No signal needed, on a train, on a plane, or in a hospital corridor.</p>
     </div>
   </div>
 </div></section>
 
 <section id="what"><div class="wrap">
-  <div class="split">
+  <div class="row">
     <div class="txt">
+      <div class="eyebrow">Guided prayer</div>
       <h2>Not sure how to start?</h2>
-      <p>Most of us aren&rsquo;t. The app walks you through it &mdash; who you&rsquo;re praying for,
-      what season you&rsquo;re in, what you want to say &mdash; and hands you back something
-      in your own words, with a verse that fits.</p>
+      <p>Most of us aren&rsquo;t. The app walks you through it &mdash; who you are
+      praying for, what season you are in, what you want to say &mdash; and hands
+      you back something in your own words, with a verse that fits.</p>
       <p>Or ignore all of it and write freely. Both are there.</p>
     </div>
-    <img src="assets/shots/03-review.jpg" alt="A completed prayer with its verse">
+    <div class="phone">
+      <img class="screen" src="assets/shots/03-review.jpg" alt="A finished prayer with its verses">
+    </div>
   </div>
-</div></section>
 
-<section><div class="wrap">
-  <div class="split">
-    <img src="assets/shots/05-devotional.jpg" alt="A daily devotional reading">
+  <div class="row flip">
     <div class="txt">
-      <h2>A verse every morning</h2>
-      <p>One verse a day, with a short note on where it comes from and what it meant
-      to the people who first heard it. Enough to carry with you, never a homework
-      assignment.</p>
-      <p>Read a chapter when you want more. All 1,189 of them are here.</p>
+      <div class="eyebrow">The whole Bible</div>
+      <h2>Two translations, no signal needed</h2>
+      <p>The Berean Standard Bible and the King James Version, all 66 books and
+      over 62,000 verses, on your device. Search it, browse it, read it anywhere.</p>
+    </div>
+    <div class="phone">
+      <img class="screen" src="assets/shots/04-bible.jpg" alt="Browsing the Bible inside the app">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="txt">
+      <div class="eyebrow">Every morning</div>
+      <h2>A verse, and what it meant</h2>
+      <p>One verse a day with a short note on where it comes from and what it
+      meant to the people who first heard it. Enough to carry with you, never a
+      homework assignment.</p>
+    </div>
+    <div class="phone">
+      <img class="screen" src="assets/shots/05-devotional.jpg" alt="The daily devotional">
     </div>
   </div>
 </div></section>
 
 <section id="church" class="church"><div class="wrap"><div class="narrow" style="text-align:center">
-  <div style="color:var(--gold);font-size:13px;letter-spacing:2px;text-transform:uppercase">Reading together</div>
-  <h2 style="text-align:center;margin-top:12px">Read with your church</h2>
-  <p>If your church joins, everyone sees the same chapter on the same day &mdash; and
-  the app works out what you have left to catch up on, from what you have actually
-  read.</p>
-
-  <div class="flow">
-    <span>Your church picks a plan</span><i>&rarr;</i>
-    <span>You read along</span><i>&rarr;</i>
-    <span>It counts towards them</span>
-  </div>
-
-  <p style="font-size:14.5px">
-    Free for the church, free for you, and nobody is asked for money.
-    They get posters and pew slips to print, and a page showing what the
-    congregation has read together.
-  </p>
-  <p style="margin-top:22px"><a href="churches/">How a church joins &rarr;</a></p>
+    <div class="txt">
+      <div class="eyebrow" style="text-align:center">Reading together</div>
+      <h2 style="text-align:center">Read with your church</h2>
+      <p>If your church joins, everyone sees the same chapter on the same day
+      &mdash; and the app works out what you have left to catch up on, from what
+      you have actually read.</p>
+      <div class="flow">
+        <span>Your church picks a plan</span><i>&rarr;</i>
+        <span>You read along</span><i>&rarr;</i>
+        <span>It counts towards them</span>
+      </div>
+      <p style="font-size:14.5px">Free for the church, free for you, and nobody is
+      asked for money. They get posters and pew slips to print, and a page showing
+      what the congregation has read together.</p>
+      <p style="margin-top:20px"><a href="churches/">How a church joins &rarr;</a></p>
+    </div>
 </div></div></section>
 
-<section class="cta"><div class="wrap"><div class="narrow">
+<section class="closing"><div class="wrap"><div class="narrow">
   <h2>Start tonight</h2>
   <p>One payment, and it&rsquo;s yours.</p>
-  <div class="stores" style="margin-top:24px">
-    <a href="https://apps.apple.com/app/id6784824470" aria-label="Download on the App Store">
+  <div class="stores" style="justify-content:center;margin-top:24px">
+    <a href="https://apps.apple.com/gb/app/letter-to-god-prayer-journal/id6784824470" aria-label="Download on the App Store">
       <img src="assets/appstore-badge.svg" alt="Download on the App Store">
     </a>
-    <div class="soon"><span>Coming soon to</span><b>Google Play</b></div>
+    <a href="https://play.google.com/store/apps/details?id=com.lettertogod.app" aria-label="Get it on Google Play">
+      <img src="assets/play-badge.png" alt="Get it on Google Play">
+    </a>
   </div>
-  <p class="muted" style="margin-top:30px;font-size:14.5px">
+  <p class="muted" style="margin-top:28px;font-size:14.5px">
     Questions? <a href="mailto:hello@letterstogodapp.org">hello@letterstogodapp.org</a>
     reaches a person, not a form.
   </p>
